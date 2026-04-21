@@ -1,0 +1,56 @@
+services:
+  app1:
+    build: .
+    container_name: app-container-1
+    expose:
+      - "3000"
+    environment:
+      - APP_NAME=app1
+      - TZ=Asia/Karachi
+    restart: always
+
+  app2:
+    build: .
+    container_name: app-container-2
+    expose:
+      - "3000"
+    environment:
+      - APP_NAME=app2
+      - TZ=Asia/Karachi
+    restart: always 
+
+  app3:
+    build: .
+    container_name: app-container-3
+    expose:
+      - "3000"
+    environment:
+      - APP_NAME=app3
+      - TZ=Asia/Karachi
+    restart: always 
+
+  admin_app:
+    build: .
+    container_name: admin-container
+    expose:
+      - "3000"
+    environment:
+      - APP_NAME=admin_app
+      - TZ=Asia/Karachi
+    restart: always  
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./nginx/html:/usr/share/nginx/html
+    depends_on:
+      - app1
+      - app2
+      - app3
+      - admin_app
+    restart: always    
