@@ -13,16 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Security scan on code
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.35.0
         with:
           scan-type: 'fs'
           scan-ref: '.'
           format: json
-          exit-code: 0
+          exit-code: 1
+          severity: HIGH,CRITICAL
           vuln-type: os,library
           output: 'trivy-results.json'
       
       - name: Upload Trivy results
+        if: always() # Ensure this step runs even if the previous step fails
         uses: actions/upload-artifact@v7
         with:
           name: trivy-results
