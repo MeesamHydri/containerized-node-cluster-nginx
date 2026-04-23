@@ -20,7 +20,7 @@ pipeline {
                 sh """
                     # Only builds dev profile images
                     # Production images are never touched
-                    docker compose -f docker-compose.dev.yml build
+                    docker-compose -f docker-compose.dev.yml build
                 """
             }
         }
@@ -29,10 +29,10 @@ pipeline {
             steps {
                 sh """
                     # Stop and remove old dev stack only
-                    docker compose -f docker-compose.dev.yml down
+                    docker-compose -f docker-compose.dev.yml down
 
                     # Start fresh dev stack
-                    docker compose -f docker-compose.dev.yml up -d
+                    docker-compose -f docker-compose.dev.yml up -d
                 """
                 echo "Dev stack deployed → http://localhost:9080"
             }
@@ -43,10 +43,10 @@ pipeline {
                 sh """
                     sleep 5
                     echo "=== Dev containers status ==="
-                    docker compose -f docker-compose.dev.yml ps
+                    docker-compose -f docker-compose.dev.yml ps
 
                     echo "=== Production containers status (should be unchanged) ==="
-                    docker compose -f docker-compose.yml ps
+                    docker-compose -f docker-compose.yml ps
                 """
             }
         }
