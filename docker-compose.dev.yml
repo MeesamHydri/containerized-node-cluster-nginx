@@ -1,0 +1,59 @@
+services:
+  # ============================================
+  # DEV STACK (managed by Jenkins only)
+  # ============================================
+  dev-app1:
+    build: .
+    container_name: dev-app-container-1
+    expose:
+      - "3000"
+    environment:
+      - APP_NAME=dev-app1
+      - TZ=Asia/Karachi
+    restart: unless-stopped              
+
+  dev-app2:
+    build: .
+    container_name: dev-app-container-2
+    expose:
+      - "3000"
+    environment:
+      - APP_NAME=dev-app2
+      - TZ=Asia/Karachi
+    restart: unless-stopped
+
+  dev-app3:
+    build: .
+    container_name: dev-app-container-3
+    expose:
+      - "3000"
+    environment:
+      - APP_NAME=dev-app3
+      - TZ=Asia/Karachi
+    restart: unless-stopped
+
+  dev-admin:
+    build: .
+    container_name: dev-admin-container
+    expose:
+      - "3000"
+    environment:
+      - APP_NAME=dev-admin
+      - TZ=Asia/Karachi
+    restart: unless-stopped
+
+  nginx-dev:
+    image: nginx:latest
+    container_name: nginx-dev
+    ports:
+      - "9080:9080"          # match nginx.dev.conf listen 9080
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf
+      - ./nginx/html:/usr/share/nginx/html
+    depends_on:
+      - dev-app1
+      - dev-app2
+      - dev-app3
+      - dev-admin
+    restart: unless-stopped
+  
